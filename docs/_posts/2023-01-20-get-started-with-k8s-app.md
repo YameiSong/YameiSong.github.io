@@ -5,7 +5,9 @@ date:   2023-01-19 11:19 +0800
 categories: k8s
 ---
 
-# 创建 cluster
+# 开始使用 Kubernetes 应用
+
+## 创建 cluster
 
 ```shell
 kind create cluster # 默认的上下文名称是 kind
@@ -33,14 +35,14 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-# 用 kubectl 查看 cluster 信息
+## 用 kubectl 查看 cluster 信息
 
 ```shell
 kubectl version
 kubectl get nodes
 ```
 
-# 创建 deployment
+## 创建 deployment
 
 deployment 的功能：
 * 寻找一个合适的 node 去运行 app。
@@ -52,7 +54,7 @@ kubectl create deployment [name] --image=[app image location]
 kubectl get deployments
 ```
 
-# 查看 pod 信息
+## 查看 pod 信息
 
 使用 kubectl create deployment 创建 delployment 的同时，会创建一个 pod。
 
@@ -63,14 +65,14 @@ kubectl logs [pod name] # 查看pod的日志，pod_name在前两个命令的输�
 kubectl exec [pod name] -- env # 查看pod的环境变量
 ```
 
-# 进入 pod 内部
+## 进入 pod 内部
 
 1. 执行 `kubectl exec -ti [pod name] --bash` 进入 pod 内部环境。
 2. 执行 `exit` 退出。
 
-# cluster 与外部通信
+## cluster 与外部通信
 
-## 通过 proxy
+### 通过 proxy
 
 cluster 是一个封闭的网络环境，它内部的 nodes 可以互相通信，但是不能和 cluster 外部的主机通信。
 
@@ -89,7 +91,7 @@ curl http://localhost:8001/version
 curl http://localhost:8001/api/v1/namespaces/default/pods/[POD_NAME]/
 ```
 
-## 通过 service
+### 通过 service
 
 service 有这几种 type，分别代表不同的通信方式：
 * ClusterIP (默认) - 在集群的内部 IP 上公开 Service 。这种类型使得 Service 只能从集群内访问。
@@ -115,4 +117,68 @@ kubectl get services
 
 # 现在可以通过[node ip]:[node port]来访问node了
 curl [node ip]:8080
+```
+
+## 缩放应用
+
+### 查看目前有几个 replica set
+
+```shell
+# 查看 deployments
+kubectl get deployments
+```
+
+输出结果中的 `READY` 显示了 deployment 中包含的应用实例的数量，现在应该是 1/1。
+
+```shell
+# 查看 replica set
+kubectl get rs
+```
+
+输出结果中的两个重要参数：
+
+* DESIRED： 预期的 replica 的数量，在用户创建 deployment 的时候定义。
+* CURRENT：当前运行的 replica 的数量。
+
+### 把 replica set 增加到 4 个
+
+使用 `kubectl scale` 指令。
+
+```shell
+kubectl scale deployments/kubernetes-bootcamp --replicas=4
+```
+
+执行 `kubectl get deployments`，此时 `READY` 应该是 4/4，表示有 4 个应用实例。
+
+执行 `kubectl get pods -o wide`，应该会列出 4 个 pods。
+
+### 把 replica set 减少到 2 个
+
+```shell
+kubectl scale deployments/kubernetes-bootcamp --replicas=2
+```
+
+执行 `kubectl get deployments`，此时 `READY` 应该是 2/2，表示有 2 个应用实例。
+
+执行 `kubectl get pods -o wide`，应该会列出 2 个 pods。
+
+## 更新应用
+
+### 更新
+
+使用 `kubectl set image` 命令把 image 更新为其他版本。
+
+```shell
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+
+# 查看更新状态
+kubectl rollout status deployments/kubernetes-bootcamp
+```
+
+### 回滚
+
+使用 `kubectl rollout undo` 命令把 image 回滚到上一个版本。
+
+```shell
+kubectl rollout undo deployments/kubernetes-bootcamp
 ```
