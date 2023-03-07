@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "玩一玩 Kubernetes cluster"
+title:  "开始使用 Kubernetes 应用"
 date:   2023-01-19 11:19 +0800
 categories: k8s
 ---
