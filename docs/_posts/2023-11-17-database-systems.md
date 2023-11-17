@@ -4,9 +4,6 @@ title:  "Database systems"
 date:   2023-11-17 16:53 +1100
 categories: database
 ---
-
-# Database systems
-
 ## Data models
 
 ### Key points
