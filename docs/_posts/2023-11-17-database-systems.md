@@ -4,17 +4,17 @@ title:  "Database systems"
 date:   2023-11-17 16:53 +1100
 categories: database
 ---
-## Data models
+# Data models
 
-### Key points
+## Key points
 
 - ER model
 - Relational data model
 - Mapping of ER to relational model
 
-### ER model
+## ER model
 
-#### Keys
+### Keys
 
 - **Key / Super key:** a set of one or more attributes that can uniquely identify an entity instance of an entity type.
 - **Candidate key:** minimal superkey (no subset is a key).
@@ -23,14 +23,14 @@ categories: database
 
 Keys are indicated in ER diagrams by <u>underlining</u>.
 
-#### Entity
+### Entity
 
 - **Week entity:** entity types that do not have a key of their own.
     - Identified by a *partial key* and by being related to another entity type - *owner*.
     - The relationship type between a weak entity type to its owner is the *identifying relationship* of the weak entity type.
 - **Strong entity:** entity types that have a *primary key* that uniquely identifies all instances.
 
-#### Relationships
+### Relationships
 
 - **Cardinality ratio:** the number of relationship instances an entity can
 participate in.
@@ -60,57 +60,57 @@ participate in.
 which project the researcher has spent time on. If we put the attribute on the
 project, then we cannot know who is spending time on that project.
 
-#### Notations
+### Notations
 
 ![](../assets/images/er_notations.png)
 
-## Relational algebra
+# Relational algebra
 
-### Key points
+## Key points
 
 - Be able to use relational algebra to answer question.
 
-## Database languages
+# Database languages
 
-### Key points
+## Key points
 
 - SQL: views, stored procedures, triggers, aggregates
 - PostgreSQL: PLpgSQL
 
-## Relational database design
+# Relational database design
 
-### Key points
+## Key points
 
 - Functional dependency
 - Normal forms
 - Design algorithms for 3NF and BCNF
 
-## Data storage
+# Data storage
 
-### Key points
+## Key points
 
 - Record format
 - Buffer management
 
-## Query optimisation
+# Query optimisation
 
-### Key points
+## Key points
 
 - Index
 - Query plan
 - Join order selection
 
-## Transaction management
+# Transaction management
 
-### Key points
+## Key points
 
 - Transcation
 - Concurrency control
 - Recovery
 
-## NoSQL
+# NoSQL
 
-### Key points
+## Key points
 
 - NoSQL concept
 - Different data model
