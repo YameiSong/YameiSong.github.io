@@ -89,19 +89,19 @@ A valid relation does not violate any integrity constraints:
 - **Key constraint:** candidate key values must be unique for every relation
 instance.
 - **Entity integrity:** an attribute that is part of a primary key cannot be NULL.
-- **Referential integrity:** The value of FK must occur in the other relation or be entirely NULL.
+- **Referential integrity:** The value of a foreign key must occur in the other relation or be entirely NULL.
 
 Insertion, deletion, and modification may violate integrity constraints.
 
 > Note: all relational integrity constraints have to do with the key values.
 
-**Insertions:** When inserting, we need to check *key constraint* – check whether
+**Insertions:** When inserting, we need to check *key constraint*   - check whether
 - that the candidate keys are not already present,
 - that the value of each foreign key either
   - is all NULL, or
   - is all non-NULL and occurs in the referenced relation.
 
-**Deletions:** When deleting, we need to check *referential integrity* – check whether the primary key occurs in another relation. If so,
+**Deletions:** When deleting, we need to check *referential integrity*  - check whether the primary key occurs in another relation. If so,
 - Delete it (this requires another integrity check, possibly causing
 a cascade of deletions), or
 - Set the foreign key value to NULL (note this can’t be done if it
@@ -113,6 +113,82 @@ is part of a primary key) or other values
   - make sure deletion and insertion don’t violate any steps.
 - If the modified attribute is a foreign key
   - check that the new value refers to an existing tuple.
+
+#### ER to Relational Model Mapping
+
+**STEP 1. Mapping Strong Entity Types**
+
+For each strong entity (not weak entity) type E, create a new relation R with
+- Attributes: all simple attributes (and simple components of composite attributes) of E.
+- Key: key of E as the primary key for the relation. 
+
+**STEP 2. Mapping Weak Entity Types**
+
+For each weak entity type W with the owner entity type E, create a new relation R with
+- Attributes :
+  - all simple attributes (and simple components of composite attributes) of W,
+  - and include the primary key attributes of the relation derived from E as the foreign key.
+- Key of R: foreign key to E and partial key of W.
+
+**STEP 3. Mapping 1:1 Relationship Types**
+
+For each 1:1 relationship type B. Let E and F be the participating entity types. Let S and T be the corresponding relations.
+- If none or one of S and T participates totally,
+  - choose one of S and T (let S be the one that **participates totally** if there is one).
+  - add attributes from the primary key of T to S as a foreign key.
+  - add all simple attributes (and simple components of composite attributes) of B as attributes > of S.
+- If both participate totally and do not participate in other relationships
+  - merge the two entity types and the relationship into a single relation.
+
+**STEP 4. Mapping 1:N Relationship Types**
+
+![](/assets/images/R_1toN.png)
+
+For each 1:N relationship type B. Let E and F be the participating entity types. Let S and T be the corresponding relations. Let E be the entity on the 1 side and F **on the N side**.
+
+Add to the relation belonging to entity T,
+- the attributes from the primary key of S as a foreign key.
+- any simple attributes (or simple components of composite attributes) from relationship B.
+
+**STEP 5. Mapping M:N Relationship Types**
+
+For each N:M relationship type B. Let E and F be the participating entity types. Let S and T be the corresponding relations.
+Create a new relation R (cross-reference) with
+- Attributes :
+  - Attributes from the key of S as a foreign key,
+  - Attributes from the key of T as a foreign key,
+  - Simple attributes and simple components of composite attributes of relation B.
+- Key: All attributes from the key of S and T.
+
+**STEP 6. Mapping Multivalued Attributes**
+
+For each multivalued attribute A, where A is an attribute of E, create a new relation R.
+- If A is a multivalued simple attribute,
+  - Attributes of R = Simple attribute A, and key of E as a foreign key.
+- If A is a multivalued composite attribute,
+  - Attributes of R = All simple components of A, and key of E as a foreign key.
+
+In both cases, the primary key of R is the set of all attributes in R.
+
+**STEP 7. Mapping N-ary Relationship Types**
+
+For each N-ary relationship type (n > 2), create a new relation with
+- Attributes: same as Step 5.
+- Key: same as Step 5.
+
+![](/assets/images/er_example.png)
+
+![](/assets/images/relation_model_example.png)
+
+| ER MODEL                     | RELATIONAL MODEL                          |
+| :--------------------------- | :---------------------------------------- |
+| Entity Type                  | Entity relation                           |
+| 1:1 or 1:N relationship type | Foreign key (or relationship relation)    |
+| M:N relationship type        | Relationship relation and two foreign key |
+| n-ary relationship type      | Relationship relation and n foreign key   |
+| Simple Attribute             | Attribute                                 |
+| Composite Attribute          | Set of simple component attributes        |
+| Multivalued Attribute        | Relation and foreign key                  |
 
 ## Relational algebra
 
