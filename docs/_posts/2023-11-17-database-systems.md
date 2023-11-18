@@ -176,9 +176,10 @@ For each N-ary relationship type (n > 2), create a new relation with
 - Attributes: same as Step 5.
 - Key: same as Step 5.
 
-![](/assets/images/er_example.png)
+| ER MODEL                           | RELATIONAL MODEL                               |
+| :--------------------------------- | :--------------------------------------------- |
+| ![](/assets/images/er_example.png) | ![](/assets/images/relation_model_example.png) |
 
-![](/assets/images/relation_model_example.png)
 
 | ER MODEL                     | RELATIONAL MODEL                          |
 | :--------------------------- | :---------------------------------------- |
