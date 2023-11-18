@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  "Database systems (I)"
+title:  "Database systems I"
 date:   2023-11-17 16:53 +1100
 categories: database
 layout: math
 ---
+# Database systems I
 
 ## Data models
 

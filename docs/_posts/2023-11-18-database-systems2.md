@@ -1,9 +1,12 @@
 ---
 layout: post
-title:  "Database systems (II)"
+title:  "Database systems II"
 date:   2023-11-18 17:14 +1100
 categories: database
+layout: math
 ---
+# Database systems II
+
 ## Database languages
 
 ### Key points
