@@ -73,6 +73,25 @@ while change do
 
 #### Minimal cover
 
+**Cover:**
+
+A set of functional dependencies F is said to cover another set of functional dependencies E if every FD in E is also in F+; that is, if every dependency in E can be inferred from F; alternatively, we can say that E is covered by F.
+
+**Equivalence:**
+
+Definition 1:
+Two sets of functional dependencies E and F are equivalent if E+ = F+. 
+
+Definition 2:
+E is equivalent to F if both the conditions hold:
+- E covers F
+- F covers E
+
+**Minimal cover:**
+
+A minimal cover F<sub>min</sub> of a set of functional dependencies E is a minimal set of dependencies (in the standard canonical form and
+without redundancy) that is equivalent to E. 
+
 A set F of FD’s is minimal if
 
 1. Every FD X → Y in F is simple: Y consists of a single attribute,
@@ -227,6 +246,112 @@ A relation scheme is in Boyce-Codd Normal Form (BCNF) if whenever X → A holds 
 | Elimination of redundancy due to functional dependency | Most | Yes   |
 | Lossless Join                                          | Yes  | Yes   |
 | Dependency preservation due to functional dependency   | Yes  | Maybe |
+
+### Decomposition
+
+A decomposition of a relation scheme, R, is a set of relation schemes 𝑅1, ... , 𝑅𝑛 such that 𝑅𝑖 ⊆ 𝑅 for each 𝑖, and $$\cup_{i=1}^{n}R_{i} = R$$
+
+This is called the attribute preservation condition of decomposition.
+
+A good decomposition should also have the following two properties:
+
+1. the dependency preservation property
+2. the nonadditive (or lossless) join property
+
+> A naive decomposition: each relation has only attribute.
+
+#### Dependency-preserving
+
+A decomposition D = {R1, ..., Rn} of R is **dependency-preserving** with respect to a set F of FDs if 
+$$(F_{1} \cup ...\cup F_{n})+ = F+$$
+
+where Fi means the projection of F onto Ri.
+
+The **projection** of F on 𝑅𝑖, denoted by 𝜋𝑅𝑖(F), where 𝑅𝑖 is a subset of R, is the set of dependencies X → Y in F+ such that the attributes in X ∪ 𝑌 are all contained in 𝑅𝑖.
+
+#### Lossless join
+
+A decomposition {R1, ..., Rm} of R is a **lossless join** decomposition with respect to a set F of FDs if for every relation instance r that satisfies F:
+$$r=\pi_{R1}(r)\bowtie\pi_{Rn}(r)$$
+
+**Theorem:**
+
+The decomposition {R1, R2} of R is lossless if the common attributes R1 ∩ R2
+form a superkey for either R1 or R2.
+
+**Note:**
+
+- The word loss in lossless refers to loss of information
+- The word loss in lossless does not refer to a loss of tuples
+
+In fact,
+- A decomposition without the lossless join property leads to additional spurious tuples after NATURAL JOIN operations.
+- These additional tuples contribute to erroneous or invalid information.
+- A decomposition with a lossless join property will not lead to additional
+tuples. Therefore, it is also known as non-additive join.
+
+#### Test lossless join property
+
+**Algorithm:**
+
+**Step 1.**
+
+Create a matrix S, each element s<sub>i,j</sub> ∈ S corresponds the relation Ri and the attribute Aj, such that: s<sub>j,i</sub> = a if Ai ∈ Rj, otherwise s<sub>j,i</sub> = b.
+
+**Step 2.**
+
+Repeat the following process until 
+- S has no change 
+- OR one row is made up entirely of "a" symbols.
+
+1. For each X → Y, choose the rows where the elements corresponding to X take the value a.
+2. In those chosen rows (**must be at least two rows**), the elements corresponding to Y also take
+the value a if **one of** the chosen rows take the value a on Y.
+
+**Verdict:** Decomposition is lossless if one row is entirely made up by “a” values.
+
+### Testing for BCNF
+
+#### Method 1
+
+To check if a nontrivial dependency α → β causes a violation of BCNF, verify **α+ = R**; that is, it is a superkey for R.
+
+To check if a relation schema R is in BCNF, check the dependencies in **F+** for violation of BCNF.
+
+#### Method 2
+
+An alternative BCNF test is sometimes easier than computing every dependency in F+.
+
+To check if a relation schema Ri in a decomposition of R is truly in BCNF, we apply this test:
+
+For each subset X of Ri, computer X+.
+
+X → (X+|<sub>Ri</sub> − X) violates BCNF, if X+
+|<sub>Ri</sub> − X ≠ ∅ and Ri − X+ ≠ ∅.
+
+This will show if Ri violates BCNF.
+
+> X+|<sub>Ri</sub> − X = ∅ means each F.D with X as the left-hand side is trivial;
+> 
+> Ri − X+ = ∅ means X is a superkey of R.
+
+### Lossless Decomposition into BCNF
+
+D := {R1, R2, ..., Rn}
+
+While (there exists a Ri ∈ D and Ri is not in BCNF),
+1. find a X → Y in Ri that violates BCNF;
+2. replace Ri in D by (Ri − Y) and (X ∪ Y);
+
+### Lossless and dependency-preserving decomposition into 3NF
+
+1. Find a minimal cover G for F.
+2. For each left-hand-side X of a functional dependency that appears in G, create a relation schema in D with attributes { X ∪ {A1} ∪ {A2} ... ∪ {Ak} }, where X -> A1, X -> A2, ..., X -> Ak are the only dependencies in G with X as left-hand-side (X is the key to this relation).
+3. If none of the relation schemas in D contains a key of R, then create one more relation schema
+in D that contains attributes that form a key of R.
+4. Eliminate redundant relations from the resulting set of relations in the relational database
+schema.
+
 
 ## Data storage
 
