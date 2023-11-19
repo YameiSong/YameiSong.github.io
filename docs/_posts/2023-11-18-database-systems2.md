@@ -134,7 +134,7 @@ FROM instructor
 WHERE salary > ALL
 (SELECT salary
 FROM instructor
-WHERE dept_name=’Comp. Sci.’);
+WHERE dept_name='Comp. Sci.');
 ```
 
 **ANY**
@@ -147,7 +147,7 @@ FROM students
 WHERE 50 > ANY
 (SELECT score
 FROM enrollment
-WHERE students.zid= enrollment.zid AND term=‘T1’);
+WHERE students.zid= enrollment.zid AND term='T1');
 ```
 
 #### Set operators
@@ -159,25 +159,25 @@ WHERE students.zid= enrollment.zid AND term=‘T1’);
 Find courses that ran in Fall 2009 or in Spring 2010.
 
 ```sql
-(select course_id from section where sem = ‘Fall’ and year = 2009)
+(select course_id from section where sem = 'Fall' and year = 2009)
 union
-(select course_id from section where sem = ‘Spring’ and year = 2010)
+(select course_id from section where sem = 'Spring' and year = 2010)
 ```
 
 Find courses that ran in Fall 2009 and in Spring 2010.
 
 ```sql
-(select course_id from section where sem = ‘Fall’ and year = 2009)
+(select course_id from section where sem = 'Fall' and year = 2009)
 intersect
-(select course_id from section where sem = ‘Spring’ and year = 2010)
+(select course_id from section where sem = 'Spring' and year = 2010)
 ```
 
 Find courses that ran in Fall 2009 but not in Spring 2010.
 
 ```sql
-(select course_id from section where sem = ‘Fall’ and year = 2009)
+(select course_id from section where sem = 'Fall' and year = 2009)
 except
-(select course_id from section where sem = ‘Spring’ and year = 2010)
+(select course_id from section where sem = 'Spring' and year = 2010)
 ```
 
 > Note: Each of the above operations will eliminate duplicates.
@@ -224,9 +224,9 @@ DROP TABLE person;
 Insert tuples using values:
 
 ```sql
-INSERT INTO Likes VALUES (’Justin’, ’Old’);
+INSERT INTO Likes VALUES ('Justin', 'Old');
 
-INSERT INTO Sells (price,bar) VALUES (2.50, ’Coogee Bay Hotel’);
+INSERT INTO Sells (price,bar) VALUES (2.50, 'Coogee Bay Hotel');
 ```
 
 Insert tuples using select:
@@ -239,47 +239,438 @@ INSERT INTO Relation (Subquery);
 
 ```sql
 DELETE FROM Likes
-WHERE drinker = ’Justin’
-AND beer = ’Sparkling Ale’;
+WHERE drinker = 'Justin'
+AND beer = 'Sparkling Ale';
 ```
 
 Omitting the WHERE Clause deletes all tuples from relation R.
 
-## Relational database design
+```sql
+DELETE FROM R;
+-- This doesn't drop the table, the table still remains
+```
 
-### Key points
+#### Update tuples
 
-- Functional dependency
-- Normal forms
-- Design algorithms for 3NF and BCNF
+```sql
+UPDATE Drinkers
+SET addr = 'Coogee' , phone = '9665-4321'
+WHERE name = 'John';
+```
 
-## Data storage
+#### View
 
-### Key points
+Tables (created by CREATE TABLE) are base relations, which are physically stored in the DBMS.
 
-- Record format
-- Buffer management
+Views are virtual relations in SQL, which are derived from base relations and does not take up space in the DBMS.
 
-## Query optimisation
+View are defined via:
+```sql
+CREATE VIEW View_name AS Query
+```
 
-### Key points
+Views may be removed via:
+```sql
+DROP VIEW View_name
+```
 
-- Index
-- Query plan
-- Join order selection
+Views update themselves automatically, if changes occur in the underlying relation(s).
 
-## Transaction management
+#### Alter table
 
-### Key points
+Sometimes, we want to make changes to the table schema.
 
-- Transcation
-- Concurrency control
-- Recovery
+The definition of a base table or of other named schema elements can be changed by using the ALTER TABLE command.
 
-## NoSQL
+- Add column(s) of table
+  ```sql
+  -- Add column phone numbers to table hotels.
+  ALTER TABLE Bars
+  ADD phone char(10) DEFAULT 'Unlisted';
+  ```
+- Delete column(s) of table
+- Modify column(s) of table
+  ```sql
+  -- Changing the primary key
+  ALTER TABLE Persons DROP PRIMARY KEY;
+  -- OR
+  ALTER TABLE Persons ADD PRIMARY KEY (ID);
+  ```
 
-### Key points
+#### Create index
 
-- NoSQL concept
-- Different data model
-- Key-Value, Document, Column-family, Graph
+```sql
+-- duplicate index values are allowed
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+
+-- no duplicate index value is allowed
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2, ...); 
+```
+
+### PLpgSQL
+
+#### User-defined data types
+
+1. **Create Domain:** define a new atomic type.
+
+    ```sql
+    CREATE DOMAIN DomainName [ AS ] DataType
+    [ DEFAULT expression ]
+    [ CONSTRAINT ConstrName constraint ];
+    ```
+
+    ```sql
+    Create Domain UnswCourseCode as text
+    check ( value ~ '[A-Z]{4}[0-9]{4}' );
+    ```
+
+    `UnswCourseCode` can then be used like other SQL atomic types.
+
+    ```sql
+    Create Table Course (
+      id integer,
+      code UnswCourseCode, ...
+    );
+    ```
+
+2. **Create type:** define a new tuple type.
+
+    ```sql
+    CREATE TYPE TypeName AS 
+    (
+      AttrName1 DataType1, 
+      AttrName2 DataType2, 
+      ...
+    );
+    ```
+
+    ```sql
+    Create type CourseInfo as 
+    (
+      course UnswCourseCode,
+      syllabus text,
+      lecturer text
+    );
+    ```
+
+CREATE TYPE is different from CREATE TABLE:
+- does not create a new (empty) table
+- does not provide for key constraints
+- does not have explicit specification of domain constraints
+- used for specifying **return types of functions** that return tuples
+or sets.
+
+#### Function
+
+```sql
+CREATE OR REPLACE FUNCTION
+  funcName(param1, param2, ....)
+  RETURNS rettype
+AS $$
+  DECLARE
+    variable declarations
+  BEGIN
+    code for function
+  END;
+$$ LANGUAGE plpgsql;
+```
+
+```sql
+CREATE OR REPLACE FUNCTION
+  add(x text, y text) RETURNS text
+AS $$
+  DECLARE
+    result text; -- local variable
+  BEGIN
+    result := x||''''||y;
+    return result;
+  END;
+$$ LANGUAGE 'plpgsql';
+```
+
+You can declare a variable to have the same type as a row from a table using `<table_name>%ROWTYPE`.
+
+You may also refer to an attribute type using and specifying `<table_name>.<column_name>%TYPE`.
+
+Example:
+```sql
+quantity INTEGER;
+start_quantity quantity%TYPE;
+employee Employees%ROWTYPE;
+name Employees.name%TYPE;
+```
+
+You can capture query results via:
+
+```sql
+SELECT Expr1, Expr2
+INTO Var1, Var2
+From R
+WHERE Condition
+```
+
+```sql
+-- cost is local var, price is attr
+SELECT price INTO cost
+FROM StockList
+WHERE item = 'Cricket Bat';
+
+cost := cost * (1 + tax_rate);
+total := total + cost ;
+```
+
+#### Control structure
+
+```sql
+if condition_1 then
+  statement_1;
+elsif condition_2 then
+  statement_2;
+else
+  else-statement;
+end if;
+```
+
+```sql
+LOOP
+  statement
+END LOOP;
+```
+
+```sql
+FOR int_var IN low .. high LOOP
+  statement
+END LOOP;
+```
+
+#### Exceptions
+
+```sql
+BEGIN
+  Statements ...
+EXCEPTION
+  WHEN Exceptions1 THEN
+    StatementsForHandler1
+  WHEN Exceptions2 THEN
+    StatementsForHandler2
+  ...
+END;
+```
+
+Example:
+
+```sql
+-- Table T contains one tuple ('Tom', 'Jones')
+DECLARE
+  x INTEGER := 3;
+BEGIN
+  UPDATE T SET firstname = 'Joe' WHERE lastname = 'Jones';
+  -- Table T now contains ('Joe', 'Jones')
+  x := x + 1;
+  y := x / 0;
+EXCEPTION
+  WHEN division_by_zero THEN
+  -- update on T is rolled back to ('Tom', 'Jones')
+  RAISE NOTICE 'Caught division_by_zero';
+  RETURN x ;
+  -- value returned is 4
+END ;
+```
+
+The RAISE operator generates server log entries, e.g.
+```sql
+RAISE DEBUG ' Simple message ';
+RAISE NOTICE ' User = % ', user_id ;
+RAISE EXCEPTION ' Fatal : value was % ', value ;
+```
+
+There are several levels of severity:
+- DEBUG, LOG, INFO, NOTICE, WARNING, and EXCEPTION.
+- not all severities generate a message to the client.
+
+#### Cursor
+
+Implicit cursor in FOR LOOP:
+
+```sql
+Create Function totalSalary() Returns real As $$
+Declare
+  employee RECORD;
+  totalSalary REAL:=0;
+Begin
+  FOR employee IN SELECT * FROM Employees
+  Loop
+    totalSalary:=totalSalary+employee.salary;
+  End Loop;
+  Return total;
+End; 
+$$ Language plpgsql; 
+```
+
+Explicit cursor:
+- Bound cursor (bound to a specific query)
+  ```sql
+  <cursor_name_a> CURSOR FOR <query_b>;
+
+  OPEN <cursor_name_a>;
+  ...
+  CLOSE <cursor_name_a>;
+  ```
+- Unbound cursor (declared without reference to any query)
+  ```sql
+  <cursor_name_c> REFCURSOR;
+
+  OPEN <cursor_name_c> FOR <query_d>;
+  ...
+  CLOSE <cursor_name_c>;
+
+  OPEN <cursor_name_c> FOR <query_e>;
+  ...
+  CLOSE <cursor_name_c>;
+  ```
+
+The fetch operator retrieves the next row from the cursor into a target.
+
+```sql
+FETCH e INTO me;
+FETCH e INTO my_id , my_name , my_salary;
+```
+
+> Note: The variables need to match the corresponding type form the return table. 
+
+Example:
+```sql
+DECLARE
+  employee Employee%ROWTYPE;
+  e CURSOR FOR Select * From Employees ;
+  totalSalary REAL:=0;
+Begin
+  OPEN e;
+    LOOP
+      FETCH e INTO employee;
+      EXIT WHEN NOT FOUND;
+      totalSalary := totalSalary+employee.salary;
+    END LOOP;
+  CLOSE e;
+End;
+```
+
+#### Trigger
+
+Event-condition-action rules approach:
+- an event activates the trigger
+- on activation, the trigger checks a condition
+- if the condition holds, a procedure is executed (the action)
+
+```sql
+CREATE TRIGGER TriggerName
+AFTER/BEFORE Event1 [OR Event2 ...]
+ON TableName
+FOR EACH ROW/STATEMENT
+EXECUTE PROCEDURE FunctionName(args...);
+```
+
+PostgreSQL triggers provide a mechanism for INSERT, DELETE or UPDATE events to automatically activate PLpgSQL functions.
+
+A trigger is defined, there needs to be a trigger procedure.
+
+```sql
+-- Create a trigger
+CREATE TRIGGER TriggerName
+...
+EXECUTE PROCEDURE function_name(args...);
+
+-- Create the trigger procedure
+CREATE OR REPLACE FUNCTION function_name() RETURNS
+TRIGGER
+...
+```
+
+The trigger function also receives two variables NEW and OLD that contains the new and old row version, respectively.
+
+Depending on the trigger, NEW and OLD variables can be accessed.
+
+| Trigger | NEW  | OLD  |
+| :------ | :--- | :--- |
+| Insert  | Yes  | No   |
+| Update  | Yes  | Yes  |
+| Delete  | No   | Yes  |
+
+**Example Scenario:**
+- Employee(id, name, address, deptartment, salary)
+- Department(id, name, manager, totSal)
+
+These natural events could affect the validity of the database:
+- a new employee beginning work in some department
+- an employee getting a rise in salary
+- an employee changing from one department to another
+- an employee leaving the company 
+
+Case 1: A new employees arrives
+```sql
+Create trigger TotalSalary1
+after insert on Employees
+for each row execute procedure totalSalary1();
+
+Create function totalSalary1() returns trigger
+as $$
+begin
+  if (new.dept is not null) then
+    update Department
+    set totSal = totSal + new.salary
+    where Department.id = new.dept;
+  end if;
+  return new;
+end;
+$$ language plpgsql;
+```
+
+Case 2: An employees change departments/salaries
+```sql
+Create trigger TotalSalary2
+after update on Employee
+for each row execute procedure totalSalary2();
+
+Create function totalSalary2() returns trigger
+as $$
+begin
+  update Department
+  set totSal = totSal + new.salary
+  where Department.id = new.dept;
+
+  update Department
+  set totSal = totSal - old.salary 
+  where Department.id = old.dept;
+  
+  return new;
+end;
+$$ language plpgsql;
+```
+
+Case 3: An employee leaves
+```sql
+Create trigger TotalSalary3
+after delete on Employee
+for each row execute procedure totalSalary3();
+Create function totalSalary3() returns trigger
+as $$
+begin
+  if (old.department is not null) then
+    update Department
+    set totSal = totSal - old.salary 
+    where Department.id = old.deptartment;
+  end if;
+  return old;
+end;
+$$ language plpgsql;
+```
+
+General database trigger usage scenarios:
+
+| Scenario                                                        | WHEN   |
+| :-------------------------------------------------------------- | :----- |
+| To maintain a separate table for summary data                   | AFTER  |
+| Checking schema-level constraints (assertions) on insert/update | BEFORE |
+| To perform updates across tables (to maintain assertions)       | AFTER  |
