@@ -1,22 +1,20 @@
 ---
 layout: post
-title:  "Database systems II"
+title:  "Database systems III: Database languages"
 date:   2023-11-18 17:14 +1100
 categories: database
 layout: math
 ---
-# Database systems II
+# Database systems III: Database languages
 
-## Database languages
-
-### Key points
+## Key points
 
 - SQL: views, stored procedures, triggers, aggregates
 - PostgreSQL: PLpgSQL
 
-### SQL
+## SQL
 
-#### Classification
+### Classification
 
 Data definition language (DDL):
 - CREATE TABLE
@@ -33,7 +31,7 @@ Data manipulation language (DML):
 - ALTER
 - ...
 
-#### String
+### String
 
 Quotes are escaped by doubling them -> ''
 
@@ -53,7 +51,7 @@ LIKE operator:
 - The symbol _ (underscore) matches any single characters
 - The symbol % (percent) matches zero or more characters
 
-#### Date
+### Date
 
 - Format is typically DD-Mon-YYYY, e.g., '18-Aug-1998'. Accepts other formats.
 - Comparison operators implement before (<) and after (>).
@@ -63,7 +61,7 @@ LIKE operator:
   -- Result: true
   ```
 
-#### NULL
+### NULL
 
 1. Comparisons with null returns unknown.
     > Example: 5 < null, null <> null, null = null
@@ -92,7 +90,7 @@ rows.
 
 **Answer:** NULL
 
-#### AS
+### AS
 
 - Renaming
 - Expression as values in columns
@@ -107,7 +105,7 @@ rows.
   WHERE beer = 'Sparkling Ale';
   ```
 
-#### Exists
+### Exists
 
 Exists keyword returns true if the relation is non-empty.
 
@@ -122,7 +120,7 @@ FROM Beers
 WHERE manf = b1.manf AND name != b1.name);
 ```
 
-#### Quantifiers
+### Quantifiers
 
 **ALL**
 
@@ -150,7 +148,7 @@ FROM enrollment
 WHERE students.zid= enrollment.zid AND term='T1');
 ```
 
-#### Set operators
+### Set operators
 
 - union
 - intersect
@@ -184,7 +182,7 @@ except
 > 
 > To keep duplicates, use union all, intersect all, except all.
 
-#### Divide
+### Divide
 
 Example: Find bars each of which sells all the beers Justin likes.
 
@@ -202,7 +200,7 @@ WHERE NOT EXISTS
 );
 ```
 
-#### Create table
+### Create table
 
 ```sql
 CREATE TABLE employee (
@@ -213,13 +211,13 @@ CREATE TABLE employee (
 );
 ```
 
-#### Drop table
+### Drop table
 
 ```sql
 DROP TABLE person;
 ```
 
-#### Insert
+### Insert
 
 Insert tuples using values:
 
@@ -235,7 +233,7 @@ Insert tuples using select:
 INSERT INTO Relation (Subquery);
 ```
 
-#### Delete tuples
+### Delete tuples
 
 ```sql
 DELETE FROM Likes
@@ -250,7 +248,7 @@ DELETE FROM R;
 -- This doesn't drop the table, the table still remains
 ```
 
-#### Update tuples
+### Update tuples
 
 ```sql
 UPDATE Drinkers
@@ -258,7 +256,7 @@ SET addr = 'Coogee' , phone = '9665-4321'
 WHERE name = 'John';
 ```
 
-#### View
+### View
 
 Tables (created by CREATE TABLE) are base relations, which are physically stored in the DBMS.
 
@@ -276,7 +274,7 @@ DROP VIEW View_name
 
 Views update themselves automatically, if changes occur in the underlying relation(s).
 
-#### Alter table
+### Alter table
 
 Sometimes, we want to make changes to the table schema.
 
@@ -297,7 +295,7 @@ The definition of a base table or of other named schema elements can be changed 
   ALTER TABLE Persons ADD PRIMARY KEY (ID);
   ```
 
-#### Create index
+### Create index
 
 ```sql
 -- duplicate index values are allowed
@@ -309,9 +307,9 @@ CREATE UNIQUE INDEX index_name
 ON table_name (column1, column2, ...); 
 ```
 
-### PLpgSQL
+## PLpgSQL
 
-#### User-defined data types
+### User-defined data types
 
 1. **Create Domain:** define a new atomic type.
 
@@ -362,7 +360,7 @@ CREATE TYPE is different from CREATE TABLE:
 - used for specifying **return types of functions** that return tuples
 or sets.
 
-#### Function
+### Function
 
 ```sql
 CREATE OR REPLACE FUNCTION
@@ -421,7 +419,7 @@ cost := cost * (1 + tax_rate);
 total := total + cost ;
 ```
 
-#### Control structure
+### Control structure
 
 ```sql
 if condition_1 then
@@ -445,7 +443,7 @@ FOR int_var IN low .. high LOOP
 END LOOP;
 ```
 
-#### Exceptions
+### Exceptions
 
 ```sql
 BEGIN
@@ -490,7 +488,7 @@ There are several levels of severity:
 - DEBUG, LOG, INFO, NOTICE, WARNING, and EXCEPTION.
 - not all severities generate a message to the client.
 
-#### Cursor
+### Cursor
 
 Implicit cursor in FOR LOOP:
 
@@ -557,7 +555,7 @@ Begin
 End;
 ```
 
-#### Trigger
+### Trigger
 
 Event-condition-action rules approach:
 - an event activates the trigger

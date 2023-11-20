@@ -1,23 +1,21 @@
 ---
 layout: post
-title:  "Database systems I"
+title:  "Database systems I: Data models"
 date:   2023-11-17 16:53 +1100
 categories: database
 layout: math
 ---
-# Database systems I
+# Database systems I: Data models
 
-## Data models
-
-### Key points
+## Key points
 
 - ER model
 - Relational data model
 - Mapping of ER to relational model
 
-### ER model
+## ER model
 
-#### Keys
+### Keys
 
 - **Super key:** a set of one or more attributes that can uniquely identify an entity instance of an entity type.
 - **Candidate key:** minimal superkey (no subset is a key).
@@ -26,14 +24,14 @@ layout: math
 
 Keys are indicated in ER diagrams by <u>underlining</u>.
 
-#### Entity
+### Entity
 
 - **Week entity:** entity types that do not have a key of their own.
     - Identified by a *partial key* and by being related to another entity type - *owner*.
     - The relationship type between a weak entity type to its owner is the *identifying relationship* of the weak entity type.
 - **Strong entity:** entity types that have a *primary key* that uniquely identifies all instances.
 
-#### Relationships
+### Relationships
 
 - **Cardinality ratio:** the number of relationship instances an entity can
 participate in.
@@ -65,11 +63,11 @@ participate in.
 which project the researcher has spent time on. If we put the attribute on the
 project, then we cannot know who is spending time on that project.
 
-#### Notations
+### Notations
 
 ![](/assets/images/er_notations.png)
 
-#### Checklist on ER modeling
+### Checklist on ER modeling
 
 1. Did you model every significant entity that has independent instances?
 2. Did you model the entity in the correct type? Strong entity or weak entity?
@@ -79,15 +77,15 @@ project, then we cannot know who is spending time on that project.
 6. Is each attribute modeled with the most appropriate attribute type?
 7. Did you use the right notation?
 
-### Relational model
+## Relational model
 
-#### Keys
+### Keys
 
 - **Primary key:** a designed candidate key.
     > When a relation schema has several candidate keys, choosing a primary key with a single attribute or a small number of attributes is usually better.
 - **Foreign key:** an attribute that keeps the value of a primary key of another relation.
 
-#### Integrity Constraints
+### Integrity Constraints
 
 A valid relation does not violate any integrity constraints:
 
@@ -119,7 +117,7 @@ is part of a primary key) or other values
 - If the modified attribute is a foreign key
   - check that the new value refers to an existing tuple.
 
-#### ER to Relational Model Mapping
+### ER to Relational Model Mapping
 
 **STEP 1. Mapping Strong Entity Types**
 
@@ -198,15 +196,15 @@ For each N-ary relationship type (n > 2), create a new relation with
 
 ## Relational algebra
 
-### Key points
+## Key points
 
 - Be able to use relational algebra to answer question.
 
-### Select
+## Select
 
 $$\sigma_{<selection\;condition>}(R)$$
 
-#### Example
+### Example
 
 $$
 \sigma_{(age<=24)}(People)\\
@@ -216,11 +214,11 @@ $$
 \sigma_{(color="red"\;\lor\;color="blue")}(Item)
 $$
 
-### Project
+## Project
 
 $$\pi_{<attribute\;list>}(R)$$
 
-#### Example
+### Example
 
 $$
 \pi_{\{department, degree\}}(Enrollment)\\
@@ -231,7 +229,7 @@ $$
 
 > **Duplicate elimination:** Relational Algebra is based on sets, so no duplicates are allowed.
 
-### Union
+## Union
 
 $$R \cup S = \{t: t \in R \;or\; t \in S\}$$
 
@@ -240,31 +238,31 @@ $$R \cup S = \{t: t \in R \;or\; t \in S\}$$
 > **Union compatibility:** there is a 1-1 correspondence between their attributes:
 the same name and same domain.
 
-#### Example
+### Example
 
 $$
 \pi_{\{course \_ id\}}(\sigma_{(semester="Fall"\;\land\;year=2009)}(Courses))\;\cup\;\pi_{\{course \_ id\}}(\sigma_{(semester="Spring"\;\land\;year=2010)}(Courses))
 $$
 
-### Intersection
+## Intersection
 
 $$R \cap S = \{t: t \in R \;and\; t \in S \}$$
 
 **Condition:** R and S must be union compatible.
 
-#### Example
+### Example
 
 $$
 \sigma_{(supervisor=1)}(Enrollment)\;\cap\;sigma_{(degree\ne"PHD")}(Enrollment)
 $$
 
-### Difference
+## Difference
 
 $$R-S = \{t: t \in R \; and \; t \notin S\}$$
 
 **Condition:** R and S must be union compatible.
 
-### Cartesian product
+## Cartesian product
 
 $$R \times S = \{t_{1} \parallel t_{2} : t_{1} \in R \;and\; t_{2} \in S\}$$
 
@@ -272,19 +270,19 @@ $$R \times S = \{t_{1} \parallel t_{2} : t_{1} \in R \;and\; t_{2} \in S\}$$
 - t1 \|\| t2 indicates the concatenation of tuples.
 - R and S not required to be union compatible, but the number of tuples in the output relations is always \|𝑅\|∗\|S\|.
 
-### Join
+## Join
 
-#### Theta-join
+### Theta-join
 
 $$R \bowtie _{<join\;condition>} S = \{t_{1} \parallel t_{2}: t_{1} \in R \;and\; t_{2} \in S \;and\; <join\;condition>\}$$
 
-#### Equi-join
+### Equi-join
 
 A type of theta-join where the only comparison operator used is “=” is called an Equi-join.
 
 $$Enrollment \bowtie _{supervisor=person\_id}Researcher$$
 
-#### Natural join
+### Natural join
 
 A type of equi-join that requires each pair of join attributes to have the same name and domain in both relations.
 
@@ -302,11 +300,11 @@ Intuitions:
 - Enforce equality on all attributes with same name
 - Eliminate one copy of duplicated attributes
 
-#### Compare joins
+### Compare joins
 
 ![](/assets/images/joins.png)
 
-### Divide
+## Divide
 
 The DIVISION operation is applied to two
 Relations R and S, where the attributes of S are a subset of the attributes of R.
@@ -316,7 +314,7 @@ Relations R and S, where the attributes of S are a subset of the attributes of R
 <!-- ![](/assets/images/divide.png) -->
 <img src="/assets/images/divide.png", width="300">
 
-#### Example
+### Example
 
 1. Which courses are offered by all departments?
 
@@ -326,7 +324,7 @@ $$Courses \div (\pi _{department}Courses)$$
 
 $$Courses \div (\pi _{degree}Courses)$$
 
-### Rename
+## Rename
 
 $$\rho_{(new\_name1,\;new\_name2,\;...)}(R)$$
 
@@ -334,11 +332,11 @@ Why use Rename?
 - To unify schemas for set operators
 - For disambiguation in “self-join”
 
-### Aggregate
+## Aggregate
 
 We can use an aggregation operator γ and a function such as SUM, AVG, MIN, MAX, or COUNT.
 
-#### Example
+### Example
 
 Sum of all values of the attribute A:
 $$\gamma_{SUM(A)}(R)$$
@@ -346,7 +344,7 @@ $$\gamma_{SUM(A)}(R)$$
 Group by B and calculate the average of all values of A in each group:
 $$\gamma_{B,\;AVG(A)}(R)$$
 
-### Notations of relational algebra
+## Notations of relational algebra
 
 | OPERATION         | NOTATION                                                                 |
 | :---------------- | :----------------------------------------------------------------------- |
