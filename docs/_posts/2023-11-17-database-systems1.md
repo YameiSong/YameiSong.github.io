@@ -42,20 +42,20 @@ participate in.
 - 1:N (one to many)
 - 1:1 (one to one)
 
-![](/assets/images/relationships.png)
+![](/assets/images/relationships.png){: width="400"}
 
 **Participation constraint on relationships**
 - Total Participation " >=1 ": each entity instance must patriciate in at least one relationship instance. 
     > Example: We want this relationship to express all publications must be written by a person. 
 
-![](/assets/images/total_participation.png)
+![](/assets/images/total_participation.png){: width="400"}
 
 - Partial Participation " >= 0 ": not necessarily total.
     > Example: Not every person has publication.
 
 **Relationship attributes**
 
-![](/assets/images/relation_attr.png)
+![](/assets/images/relation_attr.png){: width="500"}
 
 **Question:** Why not put the attribute on either researcher or project?
 
@@ -65,7 +65,7 @@ project, then we cannot know who is spending time on that project.
 
 ### Notations
 
-![](/assets/images/er_notations.png)
+![](/assets/images/er_notations.png){: width="600"}
 
 ### Checklist on ER modeling
 
@@ -311,7 +311,7 @@ Relations R and S, where the attributes of S are a subset of the attributes of R
 - The relation returned by the division operator will have attributes = (All attributes of R – All Attributes of S)
 - Return all tuples from relation R which are **associated to every S’s tuple.**
 
-![](/assets/images/divide.png)
+![](/assets/images/divide.png){: width="300"}
 
 ### Example
 

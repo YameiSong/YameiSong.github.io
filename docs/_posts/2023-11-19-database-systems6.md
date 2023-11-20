@@ -33,7 +33,7 @@ A transaction is a unit of program execution that accesses and possibly updates 
   - Kill the transaction
 - **Committed:** after successful completion.
 
-![](/assets/images/transaction_states.png)
+![](/assets/images/transaction_states.png){: width="300"}
 
 ### ACID
 
@@ -121,7 +121,7 @@ Data items can be locked in two modes:
 
 Lock-compatibility matrix:
 
-![](/assets/images/lock_compatibility.png)
+![](/assets/images/lock_compatibility.png){: width="200"}
 
 A transaction may be granted a lock on an item if the requested lock is **compatible** with locks already held on the item by other transactions.
 
@@ -242,7 +242,7 @@ maximized at one time
 - Partition Tolerance
   > System works well across distributed physical networks
 
-![](/assets/images/cap.png)
+![](/assets/images/cap.png){: width="400"}
 
 ### Different data model
 

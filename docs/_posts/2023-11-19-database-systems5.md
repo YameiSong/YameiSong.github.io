@@ -31,7 +31,7 @@ Collection of page slots (frames) which can be filled with copies of disk block 
 
 > E.g., One page = 4096 Bytes = One block
 
-![](/assets/images/buffer_pool.png)
+![](/assets/images/buffer_pool.png){: width="500"}
 
 ### Block operations
 
@@ -109,7 +109,7 @@ No replacement policy is guaranteed to be superior to the others. The choice oft
 
 Each field has a fixed length as well as the number of fields.
 
-![](/assets/images/fixed_length_record.png)
+![](/assets/images/fixed_length_record.png){: width="400"}
 
 ### Variable-length
 
@@ -117,11 +117,13 @@ Some field is of variable length.
 
 Encoding schemes where attributes are *stored in order:*
 - Option1: Prefix each field by length
-    ![](/assets/images/prefix_var_length_record.png)
+
+  ![](/assets/images/prefix_var_length_record.png){: width="400"}
 - Option 2: Terminate fields by delimiter
   > 33357462/Neil Young/Musician/0277/
 - Option 3: Array of offsets
-  ![](/assets/images/arr_offset_var_length_record.png)
+
+  ![](/assets/images/arr_offset_var_length_record.png){: width="400"}
 
 Encoding schemes where attributes are *not stored in order:*
 
@@ -135,7 +137,7 @@ Fixed length attributes store attribute values in the fixed-length part.
 
 **Example:** a tuple of (ID, Name, DeptName, Salary) where the first three are variable length.
 
-![](/assets/images/unordered_var_length_record.png)
+![](/assets/images/unordered_var_length_record.png){: width="600"}
 
 ## Slotted page
 
@@ -145,7 +147,7 @@ Introduce slot directory in footer.
 - Grows in reverse order (from right to left)
 - Record ID = location in slot table
 
-![](/assets/images/slotted_page.png)
+![](/assets/images/slotted_page.png){: width="500"}
 
 ### Delete record
 
@@ -163,7 +165,7 @@ After several insertions and deletions, the free space is fragmented.
 
 Modern RDBMS often do compaction when system is idle.
 
-![](/assets/images/fragmented_free_space.png)
+![](/assets/images/fragmented_free_space.png){: width="400"}
 
 ## Query optimisation
 
@@ -199,7 +201,7 @@ A hash function works on the search key and produces a number over the range of 
 - Fast to search (i.e., no traversing of tree nodes)
 - Best for equality searches, cannot support range searches.
 
-![](/assets/images/hash_index.png)
+![](/assets/images/hash_index.png){: width="400"}
 
 ### CREATE INDEX
 
