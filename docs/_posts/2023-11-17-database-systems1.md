@@ -311,8 +311,7 @@ Relations R and S, where the attributes of S are a subset of the attributes of R
 - The relation returned by the division operator will have attributes = (All attributes of R – All Attributes of S)
 - Return all tuples from relation R which are **associated to every S’s tuple.**
 
-<!-- ![](/assets/images/divide.png) -->
-<img src="/assets/images/divide.png", width="300">
+![](/assets/images/divide.png)
 
 ### Example
 
