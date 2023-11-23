@@ -162,6 +162,20 @@ Create a wait-for graph for currently active transactions:
 
 If the graph has a cycle, then a deadlock has occurred.
 
+### Optimistic V.S. Passimistic concurrency control
+
+| Feature                                   | Optimistic Concurrency Control                           | Pessimistic Concurrency Control                          |
+|:------------------------------------------|:---------------------------------------------------------|:---------------------------------------------------------|
+| Lock Acquisition                          | No locks are acquired initially.                           | Locks are acquired on data before performing operations.   |
+| Read Phase                                | Transactions read data without acquiring locks.           | Transactions acquire locks before reading data.          |
+| Write Phase                               | Transactions perform updates without acquiring locks.     | Transactions acquire and hold locks during updates.      |
+| Validation Phase (at Commit)              | Conflicts are checked at the time of commit.              | Conflicts are checked before acquiring locks (at read or write). |
+| Conflict Resolution                       | Conflicts are resolved at the time of commit.             | Conflicts are typically resolved by blocking or queuing. |
+| Overhead                                  | Lower overhead during normal operation.                   | Higher overhead due to lock acquisition and management.  |
+| Scalability                              | Generally more scalable in scenarios with low contention. | May experience scalability issues with high contention.  |
+| Use Cases                                | Suitable for scenarios with infrequent conflicts.         | Commonly used when conflicts are expected and need to be minimized.  |
+| Examples of Techniques                   | Versioning, Timestamps.                                   | Locks (Shared, Exclusive), Two-Phase Locking.            |
+
 ## Database recovery after transaction failure
 
 ### System log
