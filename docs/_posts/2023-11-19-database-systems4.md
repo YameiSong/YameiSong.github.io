@@ -114,6 +114,8 @@ For each X → {A} ∈ F where X = {Ai: 1 ≤ i ≤ k}, do the following:
 
 For i = 1 to k, replace X with X − {Ai} if A ∈ (X − {Ai})+.
 
+> Note: When considering if a FD can be left reduced, don't make any change to F! Just think of (X - {Ai})+, and check whether it contains A.
+
 **Step 3. Reduce redundancy**
 
 - **Input:** right and left side reduced F.
@@ -313,6 +315,10 @@ the value a if **one of** the chosen rows take the value a on Y.
 ### Method 1
 
 To check if a nontrivial dependency α → β causes a violation of BCNF, verify **α+ = R**; that is, it is a superkey for R.
+
+> Note: α → β may be a derived FD from F.
+>
+> Suggestion: Start from F<sub>min</sub>.
 
 To check if a relation schema R is in BCNF, check the dependencies in **F+** for violation of BCNF.
 

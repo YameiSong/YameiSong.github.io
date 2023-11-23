@@ -12,6 +12,28 @@ layout: math
 - Record format
 - Buffer management
 
+## Disk access time
+
+Access time includes:
+- seek time (find the right track, e.g., 10msec)
+- rotational delay (find the right sector, e.g., 5msec)
+- transfer time (read/write block, e.g., 10μsec)
+
+Random access is dominated by **seek time** and **rotational delay.**
+
+## Disk Space Management
+
+Improving Disk Access:
+1. Use knowledge of data access patterns.
+  - E.g., two records often accessed together: put them in the same block (clustering)
+  - E.g., records scanned sequentially: place them in consecutive sectors on same track
+2. Keep track of free blocks
+  - Maintain a list of free blocks
+  - Use bitmap
+3. Using OS file system to manage disk space
+  - extend OS facilities, but not rely on the OS file system.
+  - (portability and scalability)
+
 ## Disk-block access
 
 - Smallest process unit is a block.

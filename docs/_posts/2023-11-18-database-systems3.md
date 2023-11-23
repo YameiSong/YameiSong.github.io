@@ -309,6 +309,14 @@ ON table_name (column1, column2, ...);
 
 ## PLpgSQL
 
+### What pure SQL can't do?
+
+- Implementing user interactions
+- Control sequences of database operations
+- Process query results in additional ways
+
+These can be handled by PostgreSQL.
+
 ### User-defined data types
 
 1. **Create Domain:** define a new atomic type.
