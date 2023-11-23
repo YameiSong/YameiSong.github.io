@@ -324,12 +324,12 @@ To check if a relation schema Ri in a decomposition of R is truly in BCNF, we ap
 
 For each subset X of Ri, computer X+.
 
-X → (X+|<sub>Ri</sub> − X) violates BCNF, if X+
-|<sub>Ri</sub> − X ≠ ∅ and Ri − X+ ≠ ∅.
+X → (X+\|<sub>Ri</sub> − X) violates BCNF, if X+
+\|<sub>Ri</sub> − X ≠ ∅ and Ri − X+ ≠ ∅.
 
 This will show if Ri violates BCNF.
 
-> X+|<sub>Ri</sub> − X = ∅ means each F.D with X as the left-hand side is trivial;
+> X+\|<sub>Ri</sub> − X = ∅ means each F.D with X as the left-hand side is trivial;
 > 
 > Ri − X+ = ∅ means X is a superkey of R.
 
