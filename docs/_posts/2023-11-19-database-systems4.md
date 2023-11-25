@@ -325,7 +325,7 @@ To check if a relation schema R is in BCNF, check the dependencies in **F+** for
 2. For each left-hand-side X of a functional dependency that appears in G, combine all dependencies in G with X as left-hand-side.
    ```
    Example:
-   Combines
+   Combine
        X -> A1, X -> A2, ..., X -> Ak
    To
        X -> A1A2...Ak
