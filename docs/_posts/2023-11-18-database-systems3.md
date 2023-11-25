@@ -33,6 +33,10 @@ Data manipulation language (DML):
 
 ### String
 
+**IMPORTANT:** SQL String uses single quote!
+
+Double quotes are used to indicate identifiers within the database, which are objects like tables, column names, and roles. In contrast, single quotes are used to indicate string literals.
+
 Quotes are escaped by doubling them -> ''
 
 ```sql
