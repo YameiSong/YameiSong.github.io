@@ -321,15 +321,23 @@ To check if a nontrivial dependency α → β causes a violation of BCNF, verify
 To check if a relation schema R is in BCNF, check the dependencies in **F+** for violation of BCNF.
 
 **Steps**
-1. Find a minimal cover of F.
-2. For each FD in F<sub>min</sub>, check if it causes a violation of BCNF.
-3. For each sub-relations after the above decomposition,
-   1. check if it contains any left-hand-side attributes X in F<sub>min</sub>.
-   2. If so, compute X+ and check if it contains any other attributes in this FD.
-   3. If so, this FD violates BCNF and should be futher decomposed.
+1. Find a minimal cover G for F.
+2. For each left-hand-side X of a functional dependency that appears in G, combine all dependencies in G with X as left-hand-side.
+   ```
+   Example:
+   Combines
+       X -> A1, X -> A2, ..., X -> Ak
+   To
+       X -> A1A2...Ak
+   ```
+5. For each dependency in G, check if it causes a violation of BCNF.
+6. For each sub-relations after the above decomposition,
+   1. check if it contains any left-hand-side attributes X in G.
+   2. If so, compute X+ and check if it contains any other attributes in this dependency.
+   3. If so, this dependency violates BCNF and should be futher decomposed.
     ```
     Example:
-    If Fmin contains {BC->EG, D->CJ},
+    If G contains {BC->EG, D->CJ},
     we should not only check (BC)+ and D+, but also check (BD)+ and (CD)+.
     In this way, we can get (BD)+ = {B, D, C, J, E, G}, and derived FDs such as BD -> J.
     ```
