@@ -335,12 +335,12 @@ To check if a relation schema R is in BCNF, check the dependencies in **F+** for
    1. check if it contains any left-hand-side attributes X in G.
    2. If so, compute X+ and check if it contains any other attributes in this dependency.
    3. If so, this dependency violates BCNF and should be futher decomposed.
-    ```
-    Example:
-    If G contains {BC->EG, D->CJ},
-    we should not only check (BC)+ and D+, but also check (BD)+ and (CD)+.
-    In this way, we can get (BD)+ = {B, D, C, J, E, G}, and derived FDs such as BD -> J.
-    ```
+  ```
+  Example:
+  If G contains {BC->EG, D->CJ},
+  we should not only check (BC)+ and D+, but also check (BD)+ and (CD)+.
+  In this way, we can get (BD)+ = {B, D, C, J, E, G}, and derived FDs such as BD -> J.
+  ```
 
 ### Method 2
 
