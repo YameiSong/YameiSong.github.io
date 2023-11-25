@@ -317,10 +317,22 @@ the value a if **one of** the chosen rows take the value a on Y.
 To check if a nontrivial dependency α → β causes a violation of BCNF, verify **α+ = R**; that is, it is a superkey for R.
 
 > Note: α → β may be a derived FD from F.
->
-> Suggestion: Start from F<sub>min</sub>.
 
 To check if a relation schema R is in BCNF, check the dependencies in **F+** for violation of BCNF.
+
+**Steps**
+1. Find a minimal cover of F.
+2. For each FD in F<sub>min</sub>, check if it causes a violation of BCNF.
+3. For each sub-relations after the above decomposition,
+   1. check if it contains any left-hand-side attributes X in F<sub>min</sub>.
+   2. If so, compute X+ and check if it contains any other attributes in this FD.
+   3. If so, this FD violates BCNF and should be futher decomposed.
+    ```
+    Example:
+    If Fmin contains {BC->EG, D->CJ},
+    we should not only check (BC)+ and D+, but also check (BD)+ and (CD)+.
+    In this way, we can get (BD)+ = {B, D, C, J, E, G}, and derived FDs such as BD -> J.
+    ```
 
 ### Method 2
 
