@@ -375,3 +375,5 @@ While (there exists a Ri ∈ D and Ri is not in BCNF),
 in D that contains attributes that form a key of R.
 4. Eliminate redundant relations from the resulting set of relations in the relational database
 schema.
+    > A relation R is considered redundant if R is a projection of another relation S in the
+schema; alternately, R is subsumed by S.
