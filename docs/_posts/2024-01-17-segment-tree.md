@@ -5,12 +5,38 @@ date:   2024-01-17 11:37 +1100
 categories: database
 ---
 
-## Solve Problems
+## Problems Suitable for Segment Trees
 
-- Point Update, Range Query
-- Range Update, Point Query
-- Range Update, Range Query
-- Query: sum, max, min
+Segment trees are a versatile data structure that can efficiently solve a variety of problems related to range queries and updates. Here are some common problems for which segment trees are particularly well-suited:
+
+1. **Range Sum Queries:**
+   - *Problem:* Given an array, perform queries to find the sum of elements in a given range.
+   - *Solution:* Segment trees can be used to store the cumulative sum of elements in various ranges, allowing for efficient range sum queries.
+
+2. **Range Minimum/Maximum Queries:**
+   - *Problem:* Find the minimum or maximum element in a given range of an array and update elements in the array.
+   - *Solution:* Segment trees can maintain minimum or maximum values in specific ranges and quickly answer queries for range minimum or maximum.
+
+3. **Counting Elements in a Range:**
+   - *Problem:* Count the number of elements in a given range that satisfy a certain condition.
+   - *Solution:* Segment trees can store the count of elements in various ranges, facilitating quick queries on the count.
+
+4. **Finding the First Occurrence or Last Occurrence:**
+   - *Problem:* Find the index of the first or last occurrence of a particular element in a given range of an array.
+   - *Solution:* Segment trees can be adapted to efficiently find the first or last occurrence of an element in a specified range.
+
+5. **Interval Overlapping:**
+   - *Problem:* Determine if there is any overlap between intervals in a set of intervals.
+     - Add 1 on an interval when performing operations on it
+     - Query sum over an interval to check overlap (sum > 0)
+   - *Solution:* Segment trees can help efficiently check for overlapping intervals and handle interval-related queries.
+
+## Functions
+
+- Point Update
+- Range Update
+- Point Query: value
+- Range Query: sum, max, min
 
 ## Range Add Template
 
@@ -275,4 +301,18 @@ class SegmentTree:
         if right > c:
             ans = max(ans, self.innerMax(left, right, c+1, t, cur.right))
         return ans
+```
+
+## Discretize data
+
+When data range is extremely big, we can discretize data to a smaller range while keeping their relative order.
+For example, transform `[-1000, 0, 2000]` to `[0, 1, 2]`
+
+```python
+def discrete(arr):
+    # 1. use set to remove duplicates
+    # 2. use dict to map sorted value to index (i.e. "discretize")
+    mp = {val: idx for idx, val in enumerate(sorted(set(arr)))}
+    print(f'discretize {arr} to {mp}')
+    return mp
 ```
