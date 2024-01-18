@@ -2,7 +2,7 @@
 layout: post
 title:  "Binary Indexed Tree (Fenwick Tree)"
 date:   2024-01-17 15:59 +1100
-categories: database
+categories: algorithm
 ---
 
 ## Problems Suitable for Binary Indexed Trees

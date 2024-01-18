@@ -2,7 +2,7 @@
 layout: post
 title:  "Segment Tree"
 date:   2024-01-17 11:37 +1100
-categories: database
+categories: algorithm
 ---
 
 ## Problems Suitable for Segment Trees
