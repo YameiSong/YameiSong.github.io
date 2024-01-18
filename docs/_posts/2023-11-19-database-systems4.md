@@ -317,10 +317,30 @@ the value a if **one of** the chosen rows take the value a on Y.
 To check if a nontrivial dependency α → β causes a violation of BCNF, verify **α+ = R**; that is, it is a superkey for R.
 
 > Note: α → β may be a derived FD from F.
->
-> Suggestion: Start from F<sub>min</sub>.
 
 To check if a relation schema R is in BCNF, check the dependencies in **F+** for violation of BCNF.
+
+**Steps**
+1. Find a minimal cover G for F.
+2. For each left-hand-side X of a functional dependency that appears in G, combine all dependencies in G with X as left-hand-side.
+   ```
+   Example:
+   Combine
+       X -> A1, X -> A2, ..., X -> Ak
+   To
+       X -> A1A2...Ak
+   ```
+5. For each dependency in G, check if it causes a violation of BCNF.
+6. For each sub-relations after the above decomposition,
+   1. check if it contains any left-hand-side attributes X in G.
+   2. If so, compute X+ and check if it contains any other attributes in this dependency.
+   3. If so, this dependency violates BCNF and should be futher decomposed.
+  ```
+  Example:
+  If G contains {BC->EG, D->CJ},
+  we should not only check (BC)+ and D+, but also check (BD)+ and (CD)+.
+  In this way, we can get (BD)+ = {B, D, C, J, E, G}, and derived FDs such as BD -> J.
+  ```
 
 ### Method 2
 
@@ -355,3 +375,5 @@ While (there exists a Ri ∈ D and Ri is not in BCNF),
 in D that contains attributes that form a key of R.
 4. Eliminate redundant relations from the resulting set of relations in the relational database
 schema.
+    > A relation R is considered redundant if R is a projection of another relation S in the
+schema; alternately, R is subsumed by S.
