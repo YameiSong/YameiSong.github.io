@@ -23,7 +23,10 @@ The prefix sum algorithm is particularly suitable for solving problems that invo
 3. **Maximum Subarray Sum:**
    - Find the maximum sum of a contiguous subarray within an array.
 
-4.  **Maximum Subarray Product:**
+4. **Frequency Counting:**
+   - Keep track of the frequency of elements in a range.
+
+5.  **Maximum Subarray Product:**
     - Find the maximum product of a contiguous subarray within an array.
 
 ```python
