@@ -23,6 +23,32 @@ The prefix sum algorithm is particularly suitable for solving problems that invo
 3. **Maximum Subarray Sum:**
    - Find the maximum sum of a contiguous subarray within an array.
 
+```python
+def max_subarray_sum(nums):
+    n = len(nums)
+
+    # Step 1: Calculate the prefix sum array
+    prefix_sum = [0] * n
+    prefix_sum[0] = nums[0]
+    for i in range(1, n):
+        prefix_sum[i] = prefix_sum[i - 1] + nums[i]
+
+    # Step 2: Find the maximum subarray sum
+    min_prefix_sum = 0
+    max_subarray_sum = float('-inf')
+
+    for i in range(n):
+        max_subarray_sum = max(max_subarray_sum, prefix_sum[i] - min_prefix_sum)
+        min_prefix_sum = min(min_prefix_sum, prefix_sum[i])
+
+    return max_subarray_sum
+
+# Example usage:
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+result = max_subarray_sum(nums)
+print("Maximum Subarray Sum:", result)
+```
+
 4. **Frequency Counting:**
    - Keep track of the frequency of elements in a range.
 
