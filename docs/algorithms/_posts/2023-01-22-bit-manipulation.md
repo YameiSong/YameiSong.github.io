@@ -8,21 +8,22 @@ categories: algorithm
 ## Bit Manipulation
 
 ```python
+k = 3
 # Checking if a Bit is Set
-is_set = (a & (1 << 2)) != 0
-print(f"Bit 2 is set: {is_set}")
+is_set = (a & (1 << k)) != 0
+print(f"Bit k is set: {is_set}")
 
 # Setting a Bit
-set_bit = a | (1 << 3)
-print("Setting Bit 3:", set_bit)
+set_bit = a | (1 << k)
+print("Setting Bit k:", set_bit)
 
 # Clearing a Bit
-clear_bit = a & ~(1 << 2)
-print("Clearing Bit 2:", clear_bit)
+clear_bit = a & ~(1 << k)
+print("Clearing Bit k:", clear_bit)
 
 # Toggling a Bit
-toggle_bit = a ^ (1 << 2)
-print("Toggling Bit 2:", toggle_bit)
+toggle_bit = a ^ (1 << k)
+print("Toggling Bit k:", toggle_bit)
 
 # Counting Set Bits (Population Count)
 count_set_bits_a = bin(a).count('1') # or a.bit_count()

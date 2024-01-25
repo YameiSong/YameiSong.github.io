@@ -127,3 +127,21 @@ range_update(diff, 2, 4, -1)  # Update the range [2, 4] by subtracting 1
 updated_nums = compute_updated_array(diff)
 print(updated_nums)
 ```
+
+## Analyze
+
+#### What is stored in prefix sum / difference array?
+
+- The number itself
+- +1 / -1 to represent whether the number satisfy certain condition
+  > E.g., "leetcode 1124. Longest Well-Performing Interval": use +1 / -1 to represent if hour > 8 or not
+
+#### What operator should be used in prefix sum algorithm?
+
+- Sum: +
+- Check pairs: ^ (even count: 0, odd count: 1)
+
+#### How to retrieve the prefix sum at the left end of a subarray?
+
+- Store prefix sum in hash map
+- Use a variable to store the minimum prefix sum

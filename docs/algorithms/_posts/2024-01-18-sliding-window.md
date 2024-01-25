@@ -134,3 +134,31 @@ class Solution: # leetcode 187
                 ans.append(seq)
         return ans
 ```
+
+## Monotonic Stack
+
+```python
+def next_greater_element(nums):
+    n = len(nums)
+    result = [-1] * n
+    stack = []
+
+    for i in range(n):
+        while stack and nums[i] > nums[stack[-1]]:
+            # Pop elements from the stack and update result
+            idx = stack.pop()
+            result[idx] = nums[i]
+
+        # Push the current index onto the stack
+        stack.append(i)
+
+    return result
+
+# Example usage
+arr = [4, 5, 2, 10, 8]
+result = next_greater_element(arr)
+print("Next Greater Element to the Right:", result)
+```
+
+Use mono stack to keep track of the max / min number in a sliding window.
+> Exercise: leetcode 239. Sliding Window Maximum
