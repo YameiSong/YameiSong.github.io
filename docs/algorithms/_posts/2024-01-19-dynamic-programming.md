@@ -79,3 +79,76 @@ def fibonacci(n):
 # Example usage:
 result = fibonacci(5)
 print(result)  # Output: 5
+```
+
+## Tree DP & Linked Forward Star
+
+Using Linked Forward Star, we can easily iterate through children of a given tree node.
+
+```python
+class Edge:
+    def __init__(self):
+        self.to = 0
+        self.next = 0
+
+class LinkedForwardStar:
+    def __init__(self, N):
+        self.edges = []
+        self.head = [-1] * N # head[i]: index of "the last edge that starts from node (i)" in the edges array
+        self.cnt = 0
+    
+    def add_edge(self, u, v):
+        e = Edge()
+        e.to = v
+        e.next = self.head[u]
+        self.edges.append(e)
+        self.head[u] = self.cnt
+        self.cnt += 1
+    
+    def print_neighbors(self, u): # a demo of how to visit neighbors
+        i = head[u] # start point
+        while i != -1: # end point
+            print(f'u: {u}, v: {self.edges[i].to}')
+            i = self.edges[i].next # next
+```
+
+Combine Tree DP with Linked Forward Star:
+
+```python
+def maxValue(N, C, parents, values, weights):
+    graph = LinkedForwardStar(N)
+    root = -1
+    for i in range(n):
+        if p[i] == -1:
+            root = i
+        else:
+            graph.add_edge(p[i], i)
+    
+    f = [[0] * (C+1) for _ in range(N)]
+
+    def dfs(u):
+        # Node u's value and volume
+        cw = weights[u]
+        cv = values[u]
+        
+        # To select any node, its parent u must be selected first, which also limits the minimum volume to cv
+        for i in range(cv, C + 1):
+            f[u][i] += cw
+
+        # Traverse all child nodes x of node u
+        i = graph.head[u]
+        while i != -1:
+            e = graph.edges[i]
+            x = e.to
+            # Recursive processing of node x
+            dfs(x)
+            # Traverse the knapsack capacity from large to small
+            for j in range(C, -1, -1):
+                # Traverse how much knapsack capacity to allocate to node x
+                for k in range(j - cv, -1, -1):
+                    f[u][j] = max(f[u][j], f[u][j - k] + f[x][k])
+            i = e.next
+
+    dfs(root)
+    return f[root][C]
+```
