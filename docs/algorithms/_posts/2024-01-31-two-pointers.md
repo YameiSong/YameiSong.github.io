@@ -163,3 +163,102 @@ int main() {
 ```
 
 If P[i] = k, it means that at index i, there is a palindrome of length 2*k + 1 centered at i.
+
+## Floyd's Cycle Detection Algorithm
+
+### How it Works:
+
+1. **The Setup:**
+   - You have two pointers: one slow pointer (the "tortoise") and one fast pointer (the "hare").
+   - The slow pointer moves one step at a time, while the fast pointer moves two steps at a time.
+
+2. **Advancing the Pointers:**
+   - At each step, move the slow pointer one step forward and the fast pointer two steps forward.
+   - If there's no cycle in the list, the fast pointer will eventually reach the end of the list (NULL), and we can stop.
+   - However, if there is a cycle, the fast pointer will eventually catch up to the slow pointer, and they will meet at some node within the cycle.
+
+3. **Detecting the Cycle:**
+   - If the fast pointer ever equals the slow pointer (i.e., they meet), then there's definitely a cycle in the linked list.
+   - This is because the fast pointer moves twice as fast as the slow pointer, so it will "lap" the slow pointer eventually if there's a cycle.
+
+4. **Finding the Start of the Cycle (Floyd's Algorithm for Cycle Detection):**
+   - Once the tortoise and hare meet, move one of the pointers (let's say the slow pointer) back to the beginning of the list.
+   - Now, move both pointers one step at a time.
+   - The point at which they meet again will be the start of the cycle.
+
+   1. **Lengths and Positions:**
+      - Let's denote the length of the non-cyclic part of the linked list from the head to the start of the cycle as $ L $.
+      - Let's denote the length of the cycle itself as $ C $.
+      - Let's denote the position of the meeting point of the tortoise and hare within the cycle as $ P $.
+      - Let's denote the position of the cycle's starting point from the head as $ S $.
+
+   2. **Advancement of Pointers:**
+      - The tortoise moves $ L + P $ steps.
+      - The hare moves $ 2 \times (L + P) $ steps.
+
+   3. **Relation between Pointer Movements:**
+      - As the hare moves twice as fast as the tortoise, the hare's position is twice the tortoise's position within the cycle when they meet:
+        $ 2 \times (L + P) = L + P + n \times C $
+        where $ n $ is the number of times the hare has gone around the cycle when they meet.
+
+   4. **Solving for L and P:**
+      - After simplifying the equation, we find that $ L = (n - 1) \times C + (C - P) $, where $ n $ is an integer.
+      - We reset one of the pointers (let's say the tortoise) to the head of the list and keep the hare at the meeting point.
+      - Both pointers move one step at a time until they meet again.
+      - The meeting point will be the start of the cycle $ S $.
+
+   5. **Algorithm Complexity:**
+      - The complexity of this algorithm is $ O(L + C) $, where $ L $ is the length of the non-cyclic part and $ C $ is the length of the cycle.
+      - This algorithm requires only two pointers and no additional data structures, making it memory-efficient.
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def detectCycle(head):
+    # Initialize slow and fast pointers
+    slow = head
+    fast = head
+
+    # Check for cycle
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+        # If slow and fast meet, there's a cycle
+        if slow == fast:
+            break
+    else:
+        # No cycle detected
+        return None
+
+    # Move one pointer back to the head
+    slow = head
+
+    # Find the start of the cycle
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+
+    # Return the start of the cycle
+    return slow
+
+# Test the algorithm
+if __name__ == "__main__":
+    # Create a linked list with a cycle
+    head = ListNode(3)
+    head.next = ListNode(2)
+    head.next.next = ListNode(0)
+    head.next.next.next = ListNode(-4)
+    head.next.next.next.next = head.next  # Create cycle
+
+    # Detect the cycle
+    cycle_start = detectCycle(head)
+    if cycle_start:
+        print("Cycle starts at node with value:", cycle_start.val)
+    else:
+        print("No cycle detected.")
+
+```
