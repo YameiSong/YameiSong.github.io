@@ -262,3 +262,63 @@ if __name__ == "__main__":
         print("No cycle detected.")
 
 ```
+
+## Binary Search
+
+```python
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+# Test the binary search algorithm
+arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+target = 13
+print(binary_search(arr, target))  # Output: 6 (index of target value 13 in arr)
+```
+
+### Lower Bound
+
+```python
+def lower_bound(arr, target):
+    left, right = 0, len(arr)
+
+    while left < right:
+        mid = left + (right - left) // 2
+        if arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid
+
+    return left
+
+# Test the lower_bound function
+arr = [1, 2, 3, 3, 3, 4, 5]
+target = 3
+print(lower_bound(arr, target))  # Output: 2 (index of the lower bound)
+```
+
+#### Choice of left and right boundary
+
+1. **Updating `right = mid`:**
+   - If the value at the midpoint is greater than or equal to the target, it's still possible that the current midpoint is the desired lower bound.
+   - Therefore, we update `right = mid` to include the current midpoint in the search space for the next iteration.
+   - This ensures that if the current midpoint is the lower bound, we still include it in the search space for further validation.
+
+2. **Updating `left = mid + 1`:**
+   - If the value at the midpoint is less than the target, we know that the lower bound cannot be at the current midpoint or to the left of it.
+   - Therefore, we update `left = mid + 1` to exclude the current midpoint from the search space for the next iteration.
+   - This ensures that we narrow down the search space and prevent unnecessary comparisons with the current midpoint.
+
+In both cases, the goal is to reduce the search space efficiently and ensure that the algorithm converges to the correct lower bound.
+
+It's important to consider the specific requirements of the problem and choose the appropriate update strategy for `left` and `right` pointers to achieve the desired behavior and efficiency in binary search.
