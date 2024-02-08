@@ -16,6 +16,7 @@ The sliding window algorithm is particularly useful when dealing with problems t
 2. **Variable Size Subarray/Window Problems:**
    - Find the sum/average/product of subarrays/windows where the size can vary.
    - Examples: Longest Subarray with at Most K Distinct Elements, Subarrays with Product Less than K, etc.
+   - Leetcode 424. Longest Repeating Character Replacement
 
 3. **Two-Pointer Technique:**
    - Use two pointers to efficiently solve problems involving subarrays or windows.

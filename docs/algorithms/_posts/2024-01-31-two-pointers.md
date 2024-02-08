@@ -124,7 +124,7 @@ string longestPalindrome(string s) {
     int center = 0, right = 0; // Center and right boundary of the palindrome
 
     for (int i = 1; i < n - 1; ++i) {
-        int mirror = 2 * center - i;
+        int mirror = 2 * center - i; // center - (i - centers)
 
         // Check if i is within the right boundary
         if (i < right)
