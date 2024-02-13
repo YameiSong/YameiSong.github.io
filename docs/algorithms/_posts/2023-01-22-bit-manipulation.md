@@ -21,6 +21,18 @@ print("Setting Bit k:", set_bit)
 clear_bit = a & ~(1 << k)
 print("Clearing Bit k:", clear_bit)
 
+# Clear all set bits
+b = (1 << k + 1)
+c = (1 << k + 2)
+d = (1 << k + 3)
+cleared_all_set_bits = a & ~(b | c | d)
+
+# Get the lowest set bit
+lowest_set_bit = a & -a
+
+# Clear the lowest set bit
+cleared_lowest_set_bit = a & (a - 1)
+
 # Toggling a Bit
 toggle_bit = a ^ (1 << k)
 print("Toggling Bit k:", toggle_bit)
@@ -35,3 +47,7 @@ while x > 0:
     bits += 1
 # The loop continues until all set bits in the binary representation of x have been cleared.
 ```
+
+## Practices
+
+- Leetcode 52. N-Queens II
