@@ -230,8 +230,9 @@ def detectCycle(head):
         # If slow and fast meet, there's a cycle
         if slow == fast:
             break
-    else:
-        # No cycle detected
+    
+    # No cycle detected
+    if not fast or not fast.next:
         return None
 
     # Move one pointer back to the head
