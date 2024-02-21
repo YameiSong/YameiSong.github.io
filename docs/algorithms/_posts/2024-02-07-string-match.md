@@ -18,14 +18,11 @@ def z_algorithm(s):
     l, r = 0, 0  # left and right boundaries of the Z-box
     for i in range(1, n):
         if i <= r:
-            # uses previously computed z[i] and ensures it does not exceed the right boundary
+            # uses previously computed z[i - l] (relative to the left boundary), and ensures it does not exceed the right boundary
             z[i] = min(r - i + 1, z[i - l]) 
         while i + z[i] < n and s[z[i]] == s[i + z[i]]:
-            # find the longest substring at z[i] that matches the prefix of the pattern string
+            l, r = i, i + z[i] # extend the boundary
             z[i] += 1
-        if i + z[i] - 1 > r:
-            # extend the boundary
-            l, r = i, i + z[i] - 1
     return z
 
 # Example usage:
