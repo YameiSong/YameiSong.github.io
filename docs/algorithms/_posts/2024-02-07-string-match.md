@@ -7,8 +7,39 @@ categories: algorithm
 
 ## KMP
 
+### Z algorithm
+
+In string matching, the Z algorithm is used to efficiently find all occurrences of a pattern string within a given text string. It preprocesses the pattern string to produce an array that indicates the length of the longest substring at each position that matches the prefix of the pattern string.
+
 ```python
-def computeLPS(pattern):
+def z_algorithm(s):
+    n = len(s)
+    z = [0] * n
+    l, r = 0, 0  # left and right boundaries of the Z-box
+    for i in range(1, n):
+        if i <= r:
+            # uses previously computed z[i] and ensures it does not exceed the right boundary
+            z[i] = min(r - i + 1, z[i - l]) 
+        while i + z[i] < n and s[z[i]] == s[i + z[i]]:
+            # find the longest substring at z[i] that matches the prefix of the pattern string
+            z[i] += 1
+        if i + z[i] - 1 > r:
+            # extend the boundary
+            l, r = i, i + z[i] - 1
+    return z
+
+# Example usage:
+text = "aabcaabxaaaz"
+z_values = z_algorithm(text)
+print("Z values:", z_values)
+```
+
+### Failure Function
+
+The failure function is an array that associates each position in the pattern string with the length of the longest proper prefix (which is also a suffix) that matches a substring ending at that position.
+
+```python
+def failureFunction(pattern):
     """
     Computes the Longest Prefix Suffix (LPS) array for the given pattern.
     """
@@ -32,7 +63,7 @@ def KMP(text, pattern):
     """
     n = len(text)
     m = len(pattern)
-    lps = computeLPS(pattern)
+    lps = failureFunction(pattern)
     matches = []
 
     i, j = 0, 0
